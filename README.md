@@ -2,7 +2,7 @@
 
 RouteArena is a local teaching app for last-mile delivery planning. It makes optimization methods visible: first the methods race across mathematical landscapes, then they compete on hub placement and a one-rider delivery route.
 
-The current app includes an Optimizer Arena, a hub-placement demonstration, a Delivery Planner with nearest-neighbor, 2-opt, Held-Karp, genetic, and ant-colony solvers, a Risk and Uncertainty page, and an offline Assistant. The risk page uses a seeded Monte Carlo model with a shared lognormal day-wide traffic factor and independent per-leg factors, plus a configurable interval worst case. Model parameters are stated in the UI and are assumptions, not traffic measurements. Optimizer, hub, route, and risk runs save JSON summaries under the ignored `runs/` folder without customer names or uploaded coordinates. The Assistant searches local Markdown notes and those summaries, cites retrieved sources, and needs no API key. The route stops are synthetic unless provided in a CSV. Route costs use Haversine distance with an assumed 1.25 detour factor and 25 km/h average speed; these are not measured road travel times. Map lines connect points directly and are not turn-by-turn directions. RouteArena is a decision-support demonstration, not a production routing engine.
+The current app includes an Optimizer Arena, a hub-placement demonstration, a Delivery Planner with nearest-neighbor, 2-opt, Held-Karp, genetic, and ant-colony solvers, a Risk and Uncertainty page, an Assistant, and an Under the Hood syllabus map. The risk page uses a seeded Monte Carlo model with a shared lognormal day-wide traffic factor and independent per-leg factors, plus a configurable interval worst case. Model parameters are stated in the UI and are assumptions, not traffic measurements. Optimizer, hub, route, and risk runs save JSON summaries under the ignored `runs/` folder without customer names or uploaded coordinates. The Assistant searches local Markdown notes and those summaries, cites retrieved sources, and works without an API key. An optional OpenAI-compatible model can rewrite retrieved answers and compact result summaries; a numeric grounding check falls back to the offline answer when it sees an unsupported number. The route stops are synthetic unless provided in a CSV. Route costs use Haversine distance with an assumed 1.25 detour factor and 25 km/h average speed; these are not measured road travel times. Map lines connect points directly and are not turn-by-turn directions. RouteArena is a decision-support demonstration, not a production routing engine.
 
 The default map region is Nerul, Navi Mumbai. Synthetic customer locations are seeded and jittered near mapped Nerul roadside anchors to keep the demonstration on the urban land area. CSV uploads must contain `name`, `lat`, `lon`, and `demand`; they are validated in memory and are not modified. Map tiles use OpenStreetMap's token-free style and need an internet connection in the browser.
 
@@ -24,7 +24,28 @@ ruff check .
 ruff format --check .
 ```
 
-The current app works without an LLM or API key. The Assistant uses local retrieval; hosted explanations are a later milestone. Optional provider settings are documented in `.env.example`.
+The app works offline by default. Model answers are opt-in in the Assistant and require a visible checkbox before the question or compact result summary is sent to the configured endpoint. Do not send uploaded customer names or coordinates to an external provider.
+
+### Optional local model on Windows
+
+Install Ollama from its [Windows download page](https://ollama.com/download/windows), then open PowerShell and pull a small model. Ollama's model registry currently lists `qwen2.5:1.5b` at about 986 MB; actual memory use and CPU speed depend on the computer.
+
+```powershell
+ollama pull qwen2.5:1.5b
+ollama list
+Copy-Item .env.example .env
+notepad .env
+```
+
+Set these entries in `.env`, using the exact model name shown by `ollama list`:
+
+```dotenv
+LLM_BASE_URL=http://localhost:11434/v1
+LLM_API_KEY=ollama
+LLM_MODEL=qwen2.5:1.5b
+```
+
+Keep Ollama running while RouteArena is open. Ollama provides an OpenAI-compatible local endpoint; `ollama` is a placeholder key for this local connection. A hosted provider can use the same SDK path with its own base URL, model, and real API key. Never commit `.env`.
 
 Rebuild the local Markdown chunk index with:
 
@@ -32,4 +53,12 @@ Rebuild the local Markdown chunk index with:
 python scripts/build_index.py
 python scripts/eval_rag.py
 ```
+
+Run the reproducible CPU experiment sweep with:
+
+```powershell
+python scripts/run_experiments.py
+```
+
+This compares optimizers on test surfaces and hub placement, checks the hub results against SciPy, compares routing heuristics with Held-Karp, examines Monte Carlo convergence and robust candidates, and evaluates local RAG retrieval. It saves raw JSON and CSV rows, mean and standard-deviation aggregates in `experiment_summary.csv`, `experiment_metadata.json` (timestamp, seed, package versions, and machine information), and `summary.png` under the ignored `outputs/` folder. A matching run record is also written under `runs/`. Use `--quick` for smaller real samples. Report the metrics produced by the script; do not substitute unrun or illustrative results.
 

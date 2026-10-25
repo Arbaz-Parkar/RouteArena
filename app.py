@@ -36,6 +36,7 @@ from routearena.ui.assistant_page import render_assistant_page
 from routearena.ui.delivery_page import render_delivery_page
 from routearena.ui.hub_page import render_hub_page
 from routearena.ui.risk_page import render_risk_page
+from routearena.ui.under_hood_page import render_under_hood_page
 
 st.set_page_config(page_title="RouteArena | Optimizer Arena", layout="wide")
 
@@ -270,6 +271,7 @@ def main() -> None:
             "Delivery Planner",
             "Risk and Uncertainty",
             "Assistant",
+            "Under the Hood",
         ],
     )
     if page == "Hub Placement":
@@ -280,6 +282,8 @@ def main() -> None:
         render_risk_page()
     elif page == "Assistant":
         render_assistant_page()
+    elif page == "Under the Hood":
+        render_under_hood_page()
     else:
         _render_optimizer_arena()
 
