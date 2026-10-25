@@ -252,12 +252,14 @@ def render_delivery_page() -> None:
         f"Total listed demand: {demand.sum():g} units."
     )
     data_key = (source, tuple(coordinates.ravel()), tuple(names), tuple(methods), int(seed))
+    st.session_state["delivery_current_key"] = data_key
     run = st.button("Plan routes", type="primary", disabled=not methods)
     if run:
         with st.spinner("Comparing route plans…"):
             results = _solve_routes(matrix, tuple(methods), int(seed))
         st.session_state["delivery_results"] = results
         st.session_state["delivery_key"] = data_key
+        st.session_state["delivery_time_matrix"] = matrix
         st.session_state["delivery_coords"] = coordinates
         st.session_state["delivery_names"] = names
 

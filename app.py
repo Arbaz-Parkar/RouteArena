@@ -33,6 +33,7 @@ from routearena.optimizers.test_functions import (
 )
 from routearena.ui.delivery_page import render_delivery_page
 from routearena.ui.hub_page import render_hub_page
+from routearena.ui.risk_page import render_risk_page
 
 st.set_page_config(page_title="RouteArena | Optimizer Arena", layout="wide")
 
@@ -232,12 +233,15 @@ def _render_optimizer_arena() -> None:
 def main() -> None:
     """Select and render one of the current RouteArena pages."""
     page = st.sidebar.radio(
-        "Page", ["Optimizer Arena", "Hub Placement", "Delivery Planner"]
+        "Page",
+        ["Optimizer Arena", "Hub Placement", "Delivery Planner", "Risk and Uncertainty"],
     )
     if page == "Hub Placement":
         render_hub_page()
     elif page == "Delivery Planner":
         render_delivery_page()
+    elif page == "Risk and Uncertainty":
+        render_risk_page()
     else:
         _render_optimizer_arena()
 
