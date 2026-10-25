@@ -32,6 +32,7 @@ from routearena.optimizers.test_functions import (
     rosenbrock_grad,
     rosenbrock_hess,
 )
+from routearena.ui.hub_page import render_hub_page
 
 st.set_page_config(page_title="RouteArena | Optimizer Arena", layout="wide")
 
@@ -165,7 +166,7 @@ def _contour_figure(function_name: str, results, step: int) -> go.Figure:
     return fig
 
 
-def main() -> None:
+def _render_optimizer_arena() -> None:
     """Render the first RouteArena page."""
     st.title("Optimizer Arena")
     st.write(
@@ -226,6 +227,15 @@ def main() -> None:
                 f"{'converged' if result.success else 'stopped: ' + result.message}"
             )
     _render_scalar_searches()
+
+
+def main() -> None:
+    """Select and render one of the current RouteArena pages."""
+    page = st.sidebar.radio("Page", ["Optimizer Arena", "Hub Placement"])
+    if page == "Hub Placement":
+        render_hub_page()
+    else:
+        _render_optimizer_arena()
 
 
 if __name__ == "__main__":
