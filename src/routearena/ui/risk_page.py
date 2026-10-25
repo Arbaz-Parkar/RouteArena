@@ -12,6 +12,7 @@ from routearena.logistics.uncertainty import (
     interval_route,
     simulate_route,
 )
+from routearena.records import write_run_record
 
 
 def render_risk_page() -> None:
@@ -97,6 +98,47 @@ def render_risk_page() -> None:
         st.session_state["risk_analysis_key"] = analysis_key
         st.session_state["risk_candidate_results"] = candidate_risks
         st.session_state["risk_selected_interval"] = selected_interval
+        record_results = {
+            name: {
+                "mean_minutes": result.mean_minutes,
+                "percentile_90_minutes": result.percentile_90_minutes,
+                "percentile_95_minutes": result.percentile_95_minutes,
+                "probability_late": result.probability_late,
+            }
+            for name, result in candidate_risks.items()
+        }
+        selected_result = candidate_risks[selected_method]
+        record_results["selected_method"] = {
+            "name": selected_method,
+            "mean_minutes": selected_result.mean_minutes,
+            "probability_late": selected_result.probability_late,
+        }
+        record_results["selected_probability_late"] = selected_result.probability_late
+        record_results["interval"] = {
+            "lower_total_minutes": selected_interval.lower_total_minutes,
+            "worst_case_minutes": selected_interval.worst_case_minutes,
+            "lower_multiplier": selected_interval.lower_multiplier,
+            "upper_multiplier": selected_interval.upper_multiplier,
+        }
+        try:
+            record_path = write_run_record(
+                "risk",
+                config={
+                    "customer_count": matrix.shape[0] - 1,
+                    "candidate_methods": list(results),
+                    "selected_method": selected_method,
+                    "traffic_level": traffic_level,
+                    "deadline_minutes": float(deadline),
+                    "sample_count": int(sample_count),
+                    "lower_multiplier": float(lower_multiplier),
+                    "upper_multiplier": float(upper_multiplier),
+                },
+                seed=int(seed),
+                results=record_results,
+            )
+            st.session_state["risk_record_name"] = record_path.name
+        except OSError as exc:
+            st.warning(f"Risk analysis finished, but its local record could not be saved: {exc}")
 
     if st.session_state.get("risk_analysis_key") != analysis_key:
         st.info("Choose the assumptions, then select Run risk analysis.")
@@ -220,3 +262,6 @@ def render_risk_page() -> None:
         height=380,
     )
     st.plotly_chart(bounds, use_container_width=True)
+    record_name = st.session_state.get("risk_record_name")
+    if record_name:
+        st.caption(f"Latest risk run saved locally as `{record_name}`.")

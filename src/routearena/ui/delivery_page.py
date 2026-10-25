@@ -17,6 +17,7 @@ from routearena.logistics.routing import (
     nearest_neighbor,
     two_opt,
 )
+from routearena.records import write_run_record
 
 _MAX_UPLOAD_BYTES = 2 * 1024 * 1024
 _MAX_CUSTOMERS = 29
@@ -262,6 +263,31 @@ def render_delivery_page() -> None:
         st.session_state["delivery_time_matrix"] = matrix
         st.session_state["delivery_coords"] = coordinates
         st.session_state["delivery_names"] = names
+        record_results = {
+            name: {
+                "route": list(result.route),
+                "cost_minutes": result.cost,
+                "runtime_seconds": result.runtime_seconds,
+                "metadata": result.metadata,
+            }
+            for name, result in results.items()
+        }
+        try:
+            record_path = write_run_record(
+                "routing",
+                config={
+                    "customer_count": customer_count,
+                    "stop_source": source,
+                    "algorithms": list(methods),
+                    "detour_factor": 1.25,
+                    "average_speed_kmph": 25.0,
+                },
+                seed=int(seed),
+                results=record_results,
+            )
+            st.session_state["delivery_record_name"] = record_path.name
+        except OSError as exc:
+            st.warning(f"Routes were planned, but the local run record could not be saved: {exc}")
 
     if st.session_state.get("delivery_key") != data_key:
         st.info("Choose the locations and algorithms, then select Plan routes.")
@@ -287,6 +313,9 @@ def render_delivery_page() -> None:
         "Lines connect stop coordinates directly; they are not road-following directions. "
         "Route costs are based on synthetic travel times."
     )
+    record_name = st.session_state.get("delivery_record_name")
+    if record_name:
+        st.caption(f"Latest route run saved locally as `{record_name}`.")
     st.caption(
         "Map references: [Nerul railway station](https://mapcarta.com/W572630813) and "
         "[Navi Mumbai Municipal Corporation roadside locations](https://nmmc.etenders.in/tender_document/tender_7805/tender_document/tender_notice_document/1678080412Chargingstationfinaltendercompressed.pdf)."

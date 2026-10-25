@@ -31,6 +31,8 @@ from routearena.optimizers.test_functions import (
     rosenbrock_grad,
     rosenbrock_hess,
 )
+from routearena.records import write_run_record
+from routearena.ui.assistant_page import render_assistant_page
 from routearena.ui.delivery_page import render_delivery_page
 from routearena.ui.hub_page import render_hub_page
 from routearena.ui.risk_page import render_risk_page
@@ -196,6 +198,31 @@ def _render_optimizer_arena() -> None:
         with st.spinner("Running the selected optimizers…"):
             names = tuple(algorithms)
             results = _run_selected(function_name, names, (float(start_x), float(start_y)))
+        record_results = {
+            name: {
+                "point": result.x,
+                "objective": result.fun,
+                "iterations": result.nit,
+                "function_evaluations": result.nfev,
+                "converged": result.success,
+                "message": result.message,
+            }
+            for name, result in results.items()
+        }
+        try:
+            record_path = write_run_record(
+                "optimizer-arena",
+                config={
+                    "landscape": function_name,
+                    "algorithms": list(names),
+                    "starting_point": [float(start_x), float(start_y)],
+                },
+                seed=None,
+                results=record_results,
+            )
+            st.session_state["arena_record_name"] = record_path.name
+        except OSError as exc:
+            st.warning(f"Optimizer race finished, but its local run record could not be saved: {exc}")
         st.session_state["arena_results"] = results
         st.session_state["arena_function"] = function_name
         st.session_state["arena_config"] = (tuple(algorithms), float(start_x), float(start_y))
@@ -218,6 +245,9 @@ def _render_optimizer_arena() -> None:
         st.plotly_chart(_contour_figure(function_name, results, step), use_container_width=True)
 
     st.subheader("Results")
+    record_name = st.session_state.get("arena_record_name")
+    if record_name:
+        st.caption(f"Latest race saved locally as `{record_name}`.")
     columns = st.columns(len(results))
     for column, (name, result) in zip(columns, results.items(), strict=False):
         with column:
@@ -234,7 +264,13 @@ def main() -> None:
     """Select and render one of the current RouteArena pages."""
     page = st.sidebar.radio(
         "Page",
-        ["Optimizer Arena", "Hub Placement", "Delivery Planner", "Risk and Uncertainty"],
+        [
+            "Optimizer Arena",
+            "Hub Placement",
+            "Delivery Planner",
+            "Risk and Uncertainty",
+            "Assistant",
+        ],
     )
     if page == "Hub Placement":
         render_hub_page()
@@ -242,6 +278,8 @@ def main() -> None:
         render_delivery_page()
     elif page == "Risk and Uncertainty":
         render_risk_page()
+    elif page == "Assistant":
+        render_assistant_page()
     else:
         _render_optimizer_arena()
 

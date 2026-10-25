@@ -1,0 +1,62 @@
+[
+  {
+    "question": "How does gradient descent choose its next step?",
+    "expected_source": "optimizers.md"
+  },
+  {
+    "question": "What makes Adam different from basic gradient descent?",
+    "expected_source": "optimizers.md"
+  },
+  {
+    "question": "How does golden-section search narrow a minimum interval?",
+    "expected_source": "optimizers.md"
+  },
+  {
+    "question": "How does demand affect the hub placement objective?",
+    "expected_source": "hub-placement.md"
+  },
+  {
+    "question": "Why does the hub model smooth distance near a customer?",
+    "expected_source": "hub-placement.md"
+  },
+  {
+    "question": "How does nearest neighbor choose the next delivery stop?",
+    "expected_source": "routing.md"
+  },
+  {
+    "question": "How does ant colony optimization use pheromone?",
+    "expected_source": "routing.md"
+  },
+  {
+    "question": "When does Held-Karp prove the best tour?",
+    "expected_source": "routing.md"
+  },
+  {
+    "question": "Why does the traffic model use a shared city-wide factor?",
+    "expected_source": "uncertainty.md"
+  },
+  {
+    "question": "What does the worst-case interval travel time mean?",
+    "expected_source": "uncertainty.md"
+  },
+  {
+    "question": "Are delivery times based on live traffic measurements?",
+    "expected_source": "assumptions-faq.md"
+  },
+  {
+    "question": "Does an AI model select the delivery route?",
+    "expected_source": "assumptions-faq.md"
+  },
+  {
+    "question": "Who won last night's cricket match?",
+    "expected_source": null
+  },
+  {
+    "question": "What is the weather forecast for Nerul tomorrow?",
+    "expected_source": null
+  },
+  {
+    "question": "Write a birthday limerick for my friend.",
+    "expected_source": null
+  }
+]

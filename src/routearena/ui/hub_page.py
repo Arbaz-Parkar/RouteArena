@@ -8,6 +8,7 @@ import streamlit as st
 
 from routearena.logistics.hub import HubCostModel
 from routearena.optimizers import adam, bfgs, gradient_descent, newton
+from routearena.records import write_run_record
 
 
 @st.cache_data(show_spinner=False)
@@ -116,6 +117,25 @@ def render_hub_page() -> None:
 
     with st.spinner("Finding hub locations…"):
         customers, demands, model, results = _solve_hub(int(seed), int(count))
+    record_results = {
+        name: {
+            "point_km": (result.x / 1000.0).tolist(),
+            "objective": result.fun,
+            "iterations": result.nit,
+            "converged": result.success,
+        }
+        for name, result in results.items()
+    }
+    try:
+        record_path = write_run_record(
+            "hub-placement",
+            config={"customer_count": int(count), "surface": "smoothed weighted distance"},
+            seed=int(seed),
+            results=record_results,
+        )
+        st.caption(f"Hub comparison saved locally as `{record_path.name}`.")
+    except OSError as exc:
+        st.warning(f"Hub comparison finished, but its local run record could not be saved: {exc}")
     st.plotly_chart(_figure(customers, demands, model, results), use_container_width=True)
 
     columns = st.columns(len(results))
