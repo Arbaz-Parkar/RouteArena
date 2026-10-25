@@ -71,7 +71,11 @@ def _figure(customers: np.ndarray, demands: np.ndarray, model: HubCostModel, res
             y=customers[:, 1] / 1000.0,
             mode="markers",
             name="Synthetic customers",
-            marker={"size": 8 + 2 * demands, "color": "white", "line": {"color": "black", "width": 1}},
+            marker={
+                "size": 8 + 2 * demands,
+                "color": "white",
+                "line": {"color": "black", "width": 1},
+            },
             text=[f"Demand weight: {weight:g}" for weight in demands],
             hovertemplate="x=%{x:.2f} km<br>y=%{y:.2f} km<br>%{text}<extra></extra>",
         )
@@ -106,7 +110,8 @@ def render_hub_page() -> None:
         "This page compares optimizers on a smooth cost map using reproducible synthetic points."
     )
     st.caption(
-        "The points are synthetic and live in a local flat coordinate plane; this is not a street map. "
+        "The points are synthetic and live in a local flat coordinate plane; "
+        "this is not a street map. "
         "The objective sums demand-weighted straight-line distances, not road travel time."
     )
     seed = st.number_input("Random seed", min_value=0, max_value=1_000_000, value=17, step=1)

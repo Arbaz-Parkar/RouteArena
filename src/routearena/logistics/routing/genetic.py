@@ -6,7 +6,12 @@ from time import perf_counter
 
 import numpy as np
 
-from routearena.logistics.routing.common import RouteResult, make_result, route_cost, validate_time_matrix
+from routearena.logistics.routing.common import (
+    RouteResult,
+    make_result,
+    route_cost,
+    validate_time_matrix,
+)
 
 
 def _order_crossover(first: np.ndarray, second: np.ndarray, rng: np.random.Generator) -> np.ndarray:

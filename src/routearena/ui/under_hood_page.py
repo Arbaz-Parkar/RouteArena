@@ -1,38 +1,64 @@
 """A plain-language map from RouteArena features to course topics."""
 
-import streamlit as st
+import streamlit as st  # noqa: I001
+
 
 
 _COVERAGE = [
     {
         "Unit": "Unit 1 · Optimization process",
-        "RouteArena feature": "Golden section, Fibonacci, quadratic fit, contour views, and problem setup",
+        "RouteArena feature": (
+            "Golden section, Fibonacci, quadratic fit, contour views, and problem setup"
+        ),
         "Status": "Implemented",
         "Where to look": "Optimizer Arena · optimizers/line_search.py · logistics/hub.py",
     },
     {
         "Unit": "Unit 2 · Order methods",
-        "RouteArena feature": "Gradient descent, Adagrad, RMSProp, Adadelta, Adam, Newton, secant, and BFGS",
+        "RouteArena feature": (
+            "Gradient descent, Adagrad, RMSProp, Adadelta, Adam, Newton, secant, and BFGS"
+        ),
         "Status": "Implemented; conjugate gradient and hypergradient are optional gaps",
         "Where to look": "Optimizer Arena · optimizers/first_order.py · optimizers/second_order.py",
     },
     {
         "Unit": "Unit 3 · Sampling and surrogate models",
-        "RouteArena feature": "Random, factorial, stratified, and Latin-hypercube designs; discrepancy metrics; polynomial and RBF GP surrogates; expected-improvement tuning",
-        "Status": "Implemented in Smart Tuning; experiment reports compare Bayesian and random search",
-        "Where to look": "Smart Tuning · surrogate/sampling.py · surrogate/models.py · surrogate/bayes.py",
+        "RouteArena feature": (
+            "Random, factorial, stratified, and Latin-hypercube designs; discrepancy "
+            "metrics; polynomial and RBF GP surrogates; expected-improvement tuning"
+        ),
+        "Status": (
+            "Implemented in Smart Tuning; experiment reports compare Bayesian "
+            "and random search"
+        ),
+        "Where to look": (
+            "Smart Tuning · surrogate/sampling.py · surrogate/models.py · "
+            "surrogate/bayes.py"
+        ),
     },
     {
         "Unit": "Unit 4 · Uncertainty and combinatorial optimization",
-        "RouteArena feature": "Monte Carlo and interval risk, Held-Karp, nearest neighbor, 2-opt, genetic algorithm, and ant colony",
+        "RouteArena feature": (
+            "Monte Carlo and interval risk, Held-Karp, nearest neighbor, 2-opt, "
+            "genetic algorithm, and ant colony"
+        ),
         "Status": "Implemented",
-        "Where to look": "Delivery Planner · Risk and Uncertainty · logistics/routing/ · logistics/uncertainty.py",
+        "Where to look": (
+            "Delivery Planner · Risk and Uncertainty · logistics/routing/ · "
+            "logistics/uncertainty.py"
+        ),
     },
     {
         "Unit": "GenAI demonstration · project extension",
-        "RouteArena feature": "Optional grounded explanations, cited local RAG, validated scenario parsing, and run summaries",
+        "RouteArena feature": (
+            "Optional grounded explanations, cited local RAG, validated scenario "
+            "parsing, and run summaries"
+        ),
         "Status": "Implemented when a model is configured; all answers still work offline",
-        "Where to look": "Assistant · genai/client.py · genai/grounding.py · genai/scenario.py · genai/rag/",
+        "Where to look": (
+            "Assistant · genai/client.py · genai/grounding.py · "
+            "genai/scenario.py · genai/rag/"
+        ),
     },
     {
         "Unit": "ML demonstration · project extension",
@@ -56,11 +82,13 @@ def render_under_hood_page() -> None:
     st.markdown(
         """
         - Customer stops are synthetic unless supplied through a CSV upload.
-        - Route time is estimated from straight-line distance, a detour factor, and an assumed average speed.
-        - Traffic is sampled from the documented lognormal teaching model; it is not measured traffic.
+        - Route time uses straight-line distance, a detour factor, and an assumed speed.
+        - Traffic uses the documented lognormal teaching model; it is not measured traffic.
         - The hub uses a local planar projection around Nerul and is intended for a small area.
-        - RouteArena plans one rider’s closed tour. It is a teaching and decision-support demo, not a live navigation service.
-        - An optional language model rewrites supplied results. The solvers produce all numeric results.
+        - RouteArena plans one rider’s closed tour. It is a teaching and decision-support
+          demo, not a live navigation service.
+        - An optional language model rewrites supplied results. Solvers produce
+          numeric results.
         """
     )
     st.subheader("Reproducibility")

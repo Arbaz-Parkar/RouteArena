@@ -49,7 +49,9 @@ def parse_scenario(text: str, client: LLMClient) -> Scenario:
     try:
         value = json.loads(response)
     except json.JSONDecodeError as exc:
-        raise ScenarioParseError("The model did not return valid JSON. Rephrase and try again.") from exc
+        raise ScenarioParseError(
+            "The model did not return valid JSON. Rephrase and try again."
+        ) from exc
     try:
         return Scenario.model_validate(value)
     except ValidationError as exc:
@@ -57,8 +59,12 @@ def parse_scenario(text: str, client: LLMClient) -> Scenario:
         missing = [str(error["loc"][0]) for error in errors if error["type"] == "missing"]
         if missing:
             fields = ", ".join(dict.fromkeys(missing))
-            raise ScenarioParseError(f"Missing required details: {fields}. Please rephrase.") from exc
+            raise ScenarioParseError(
+                f"Missing required details: {fields}. Please rephrase."
+            ) from exc
         fields = ", ".join(
             dict.fromkeys(str(error["loc"][0]) if error["loc"] else "scenario" for error in errors)
         )
-        raise ScenarioParseError(f"Invalid scenario values for: {fields}. Please rephrase.") from exc
+        raise ScenarioParseError(
+            f"Invalid scenario values for: {fields}. Please rephrase."
+        ) from exc

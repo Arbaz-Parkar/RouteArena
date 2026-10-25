@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from math import erf, pi, sqrt
-from typing import Callable
 
 import numpy as np
 
@@ -102,7 +102,9 @@ def bayesian_optimization(
     """Optimize a black-box objective by fitting an RBF GP and maximizing EI."""
     limits = _checked_bounds(bounds)
     if initial_samples < 2 or iterations < 0 or candidate_count < 1:
-        raise ValueError("initial_samples >= 2, iterations >= 0, and candidate_count >= 1 are required")
+        raise ValueError(
+            "initial_samples >= 2, iterations >= 0, and candidate_count >= 1 are required"
+        )
     dimensions = limits.shape[0]
     unit_bounds = np.tile(np.array([[0.0, 1.0]]), (dimensions, 1))
     unit_points = latin_hypercube(unit_bounds, initial_samples, seed=seed)
@@ -110,7 +112,7 @@ def bayesian_optimization(
     values = _evaluate(objective, points)
     rng = np.random.default_rng(seed + 1)
 
-    for iteration in range(iterations):
+    for _iteration in range(iterations):
         normalized = (points - limits[:, 0]) / (limits[:, 1] - limits[:, 0])
         model = fit_gaussian_process(normalized, values, length_scale=length_scale)
         candidates = rng.random((candidate_count, dimensions))

@@ -41,7 +41,8 @@ def test_sampling_plans_are_reproducible_and_respect_bounds() -> None:
 def test_centered_discrepancy_matches_scipy_validation_reference() -> None:
     points = latin_hypercube(np.array([[0.0, 1.0]] * 3), 18, seed=17)
     metrics = space_filling_metrics(points)
-    assert np.isclose(metrics["centered_discrepancy"], qmc.discrepancy(points, method="CD"), atol=1e-10)
+    reference = qmc.discrepancy(points, method="CD")
+    assert np.isclose(metrics["centered_discrepancy"], reference, atol=1e-10)
     assert metrics["minimum_pairwise_distance"] > 0.0
 
 
@@ -73,7 +74,9 @@ def test_gaussian_process_matches_sklearn_reference() -> None:
 
 def test_expected_improvement_and_bayesian_budget() -> None:
     assert np.allclose(expected_improvement(np.array([0.0]), np.array([0.0]), 1.0), [0.99])
-    objective = lambda point: float(np.sum((point - np.array([0.25, 1.5])) ** 2))
+    def objective(point: np.ndarray) -> float:
+        return float(np.sum((point - np.array([0.25, 1.5])) ** 2))
+
     result = bayesian_optimization(
         objective, _BOUNDS, initial_samples=5, iterations=4, candidate_count=64, seed=3
     )

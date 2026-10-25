@@ -56,7 +56,11 @@ def test_chat_wrapper_turns_provider_failure_into_safe_error() -> None:
 
 
 def test_grounding_allows_rounding_and_rejects_invented_values() -> None:
-    assert check_numeric_grounding("The route is 12.3 minutes.", "Computed route: 12.34 min.").grounded
-    result = check_numeric_grounding("The route is 12.3 minutes and has 6 stops.", "Computed route: 12.34 min.")
+    assert check_numeric_grounding(
+        "The route is 12.3 minutes.", "Computed route: 12.34 min."
+    ).grounded
+    result = check_numeric_grounding(
+        "The route is 12.3 minutes and has 6 stops.", "Computed route: 12.34 min."
+    )
     assert not result.grounded
     assert result.unsupported_numbers == ("6",)

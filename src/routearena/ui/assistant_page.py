@@ -119,7 +119,8 @@ def _model_result_explanation(fallback: str, client: LLMClient) -> tuple[str, st
         )
         return (
             fallback,
-            "The model included a number that was not in the run summary; showing the template instead.",
+            "The model included a number that was not in the run summary; "
+            "showing the template instead.",
         )
     return f"{generated}\n\nSource: [current RouteArena run]", None
 
@@ -129,13 +130,15 @@ def render_assistant_page() -> None:
     st.title("Assistant")
     st.write(
         "Ask about an optimization method, route, or project assumption. "
-        "The offline assistant searches local notes and saved run summaries, then cites its sources."
+        "The offline assistant searches local notes and saved run summaries, "
+        "then cites its sources."
     )
     configured = model_is_configured()
     if configured:
         st.info(
             "When model answers are enabled, your question and retrieved notes, scenario text, "
-            "or a compact run summary are sent to the configured provider. Hosted providers receive that text. "
+            "or a compact run summary are sent to the configured provider. "
+            "Hosted providers receive that text. "
             "Do not include customer names, uploaded stop data, or coordinates."
         )
         use_model = st.checkbox("Use the configured language model for answers", value=False)
@@ -182,7 +185,10 @@ def render_assistant_page() -> None:
     if configured and client is None:
         st.caption("Enable model answers above to use scenario parsing.")
     elif not configured:
-        st.caption("Scenario parsing needs a configured model; the rest of the assistant works offline.")
+        st.caption(
+            "Scenario parsing needs a configured model; "
+            "the rest of the assistant works offline."
+        )
 
     explain = st.button(
         "Explain the latest route and risk results",

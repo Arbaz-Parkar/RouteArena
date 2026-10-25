@@ -22,6 +22,7 @@ import matplotlib.backends.backend_agg
 import matplotlib.figure
 import numpy as np
 from scipy.optimize import minimize as scipy_minimize
+
 from routearena.genai.rag.retrieval import build_knowledge_chunks, retrieve
 from routearena.logistics.hub import HubCostModel
 from routearena.logistics.routing import (
@@ -249,7 +250,9 @@ def _uncertainty_experiments(quick: bool) -> tuple[list[dict[str, Any]], dict[st
             "mean_minutes": float(risk[name].mean_minutes),
             "p90_minutes": float(risk[name].percentile_90_minutes),
             "probability_late": float(risk[name].probability_late),
-            "interval_worst_case_minutes": float(interval_route(matrix, candidates[name].route).worst_case_minutes),
+            "interval_worst_case_minutes": float(
+                interval_route(matrix, candidates[name].route).worst_case_minutes
+            ),
             "selected_as_shortest": name == shortest_name,
             "selected_as_robust": name == robust_name,
         }
@@ -261,7 +264,10 @@ def _uncertainty_experiments(quick: bool) -> tuple[list[dict[str, Any]], dict[st
         "shortest_candidate": shortest_name,
         "robust_candidate_lowest_p90": robust_name,
         "traffic_level": "moderate",
-        "note": "Monte Carlo and interval values use documented teaching assumptions, not measured traffic.",
+        "note": (
+            "Monte Carlo and interval values use documented teaching assumptions, "
+            "not measured traffic."
+        ),
     }
     return [*convergence_rows, *candidate_rows], metadata
 
@@ -337,7 +343,9 @@ def _write_csv(rows: list[dict[str, Any]], destination: Path) -> None:
         for row in rows:
             writer.writerow(
                 {
-                    key: json.dumps(value, ensure_ascii=False) if isinstance(value, (list, dict)) else value
+                    key: json.dumps(value, ensure_ascii=False)
+                    if isinstance(value, (list, dict))
+                    else value
                     for key, value in row.items()
                 }
             )
@@ -452,7 +460,14 @@ def run(quick: bool, output_dir: Path) -> dict[str, Any]:
     uncertainty_rows, uncertainty_summary = _uncertainty_experiments(quick)
     rag_rows, rag_summary = _rag_experiments()
     summary_rows = [{"group": "rag_eval_summary", **rag_summary}]
-    raw_rows = [*optimizer_rows, *hub_rows, *routing_rows, *uncertainty_rows, *rag_rows, *summary_rows]
+    raw_rows = [
+        *optimizer_rows,
+        *hub_rows,
+        *routing_rows,
+        *uncertainty_rows,
+        *rag_rows,
+        *summary_rows,
+    ]
     aggregate_rows = _aggregate_rows(raw_rows)
     all_rows = [*raw_rows, *aggregate_rows]
     metadata = {
@@ -474,7 +489,8 @@ def run(quick: bool, output_dir: Path) -> dict[str, Any]:
         "notes": [
             "All random generators use recorded deterministic seeds.",
             "Hub SciPy results are a comparison reference, not the application solver.",
-            "Synthetic routing points occupy a 10 km square; time uses a 1.25 detour factor and 25 km/h assumed speed.",
+            "Synthetic routing points occupy a 10 km square; time uses a 1.25 detour "
+            "factor and 25 km/h assumed speed.",
             "Traffic model values are assumptions and do not represent measured travel times.",
             "Quick mode evaluates smaller real samples; do not present it as the full sweep.",
         ],
@@ -483,7 +499,11 @@ def run(quick: bool, output_dir: Path) -> dict[str, Any]:
         "experiment-sweep",
         config={"quick_mode": quick, "output_dir": str(output_dir), "seed": SEED},
         seed=SEED,
-        results={"row_counts": metadata["row_counts"], "rag": rag_summary, "uncertainty": uncertainty_summary},
+        results={
+            "row_counts": metadata["row_counts"],
+            "rag": rag_summary,
+            "uncertainty": uncertainty_summary,
+        },
         runs_dir=ROOT / "runs",
     )
     metadata["run_record"] = str(run_record)
@@ -502,7 +522,9 @@ def run(quick: bool, output_dir: Path) -> dict[str, Any]:
 def main() -> None:
     """Parse CLI flags and report output paths and actual RAG metrics."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--quick", action="store_true", help="use a small real sample for a short run")
+    parser.add_argument(
+        "--quick", action="store_true", help="use a small real sample for a short run"
+    )
     parser.add_argument(
         "--output-dir",
         type=Path,
@@ -513,7 +535,9 @@ def main() -> None:
     try:
         metadata = run(args.quick, args.output_dir)
     except ImportError as exc:
-        raise SystemExit("Experiment dependency missing. Install with: python -m pip install -e '.[dev]'") from exc
+        raise SystemExit(
+            "Experiment dependency missing. Install with: python -m pip install -e '.[dev]'"
+        ) from exc
     print(f"Saved experiment artifacts under {args.output_dir.resolve()}")
     print(
         "RAG hit@4: "

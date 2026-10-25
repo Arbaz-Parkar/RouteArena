@@ -19,7 +19,9 @@ def test_haversine_and_distance_matrix_have_expected_values():
     points = np.array([[0.0, 0.0], [1.0, 0.0]])
     matrix = distance_matrix(points)
 
-    assert haversine_distance(tuple(points[0]), tuple(points[1])) == pytest.approx(111_195, rel=1e-3)
+    assert haversine_distance(tuple(points[0]), tuple(points[1])) == pytest.approx(
+        111_195, rel=1e-3
+    )
     np.testing.assert_allclose(matrix, matrix.T)
     np.testing.assert_allclose(np.diag(matrix), 0.0)
 
@@ -70,7 +72,9 @@ def test_hub_gradient_matches_central_differences():
     for index in range(2):
         offset = np.zeros(2)
         offset[index] = step
-        numerical[index] = (model.objective(point + offset) - model.objective(point - offset)) / (2 * step)
+        numerical[index] = (
+            model.objective(point + offset) - model.objective(point - offset)
+        ) / (2 * step)
 
     np.testing.assert_allclose(model.gradient(point), numerical, rtol=2e-5, atol=2e-5)
 
@@ -81,7 +85,10 @@ def test_hub_hessian_matches_gradient_differences():
     step = 1e-3
     numerical = np.column_stack(
         [
-            (model.gradient(point + np.eye(2)[index] * step) - model.gradient(point - np.eye(2)[index] * step))
+            (
+                model.gradient(point + np.eye(2)[index] * step)
+                - model.gradient(point - np.eye(2)[index] * step)
+            )
             / (2 * step)
             for index in range(2)
         ]

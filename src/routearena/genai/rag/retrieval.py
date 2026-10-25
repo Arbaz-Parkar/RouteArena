@@ -173,16 +173,18 @@ def build_knowledge_chunks(
         section_lines: list[str] = []
 
         def flush_section() -> None:
-            body = "\n".join(section_lines).strip()
+            body = "\n".join(section_lines).strip()  # noqa: B023 - flushed synchronously
             if not body:
                 return
-            section_text = f"{current_heading}\n{body}"
+            section_text = f"{current_heading}\n{body}"  # noqa: B023 - flushed synchronously
             pieces = _split_text(section_text, size=chunk_size, overlap=overlap)
             for piece_index, piece in enumerate(pieces, start=1):
-                section = current_heading
+                section = current_heading  # noqa: B023 - flushed synchronously
                 if len(pieces) > 1:
-                    section = f"{current_heading} (part {piece_index})"
-                chunks.append(KnowledgeChunk(path.name, section, unit, piece))
+                    section = f"{current_heading} (part {piece_index})"  # noqa: B023
+                chunks.append(  # noqa: B023
+                    KnowledgeChunk(path.name, section, unit, piece)  # noqa: B023
+                )
 
         for line in lines:
             if line.startswith("#"):
@@ -318,7 +320,9 @@ def _tokens(text: str) -> list[str]:
     return [token for token in _WORD_PATTERN.findall(text.lower()) if token not in _STOP_WORDS]
 
 
-def _weighted_vector(tokens: list[str], inverse_document_frequency: dict[str, float]) -> dict[str, float]:
+def _weighted_vector(
+    tokens: list[str], inverse_document_frequency: dict[str, float]
+) -> dict[str, float]:
     counts = Counter(tokens)
     return {
         term: (1.0 + math.log(count)) * inverse_document_frequency[term]

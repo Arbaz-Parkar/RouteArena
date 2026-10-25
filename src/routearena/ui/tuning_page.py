@@ -113,7 +113,12 @@ def render_tuning_page() -> None:
             y=design[:, 1],
             z=design[:, 2],
             mode="markers",
-            marker={"size": 5, "color": result["design_values"], "colorscale": "Viridis", "showscale": True},
+            marker={
+                "size": 5,
+                "color": result["design_values"],
+                "colorscale": "Viridis",
+                "showscale": True,
+            },
             text=[f"Mean route time: {value:.2f} minutes" for value in result["design_values"]],
             hovertemplate="alpha=%{x:.2f}<br>beta=%{y:.2f}<br>evaporation=%{z:.2f}<br>%{text}<extra></extra>",
         )

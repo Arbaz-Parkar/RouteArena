@@ -77,7 +77,10 @@ def backtracking_step(
         candidate = x + alpha * direction
         candidate_value = objective_value(fun, candidate)
         evaluations += 1
-        if np.isfinite(candidate_value) and candidate_value <= value + armijo * alpha * directional_derivative:
+        if (
+            np.isfinite(candidate_value)
+            and candidate_value <= value + armijo * alpha * directional_derivative
+        ):
             return candidate, candidate_value, evaluations, True
         alpha *= shrink
     return x, value, evaluations, False

@@ -87,5 +87,8 @@ def run_regression_demo(seed: int = 0) -> dict[str, Any]:
         "iterations": {"Gradient descent": descent.nit, "Adam": adaptive.nit},
         "converged": {"Gradient descent": descent.success, "Adam": adaptive.success},
         "sklearn_available": sklearn_error is not None,
-        "note": "Synthetic teaching data generated from a known linear delivery-time rule plus noise.",
+        "note": (
+            "Synthetic teaching data generated from a known linear delivery-time "
+            "rule plus noise."
+        ),
     }

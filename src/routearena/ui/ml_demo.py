@@ -17,11 +17,13 @@ def render_ml_demo() -> None:
     """Show gradient-based learning, a closed-form reference, and test error."""
     st.subheader("How AI learns")
     st.write(
-        "A small model learns delivery time from synthetic distance, stop-count, and traffic examples. "
+        "A small model learns delivery time from synthetic distance, stop-count, "
+        "and traffic examples. "
         "Gradient descent and Adam update its weights; the closed-form solution gives a reference."
     )
     st.caption(
-        "The data is generated from a known linear rule with added noise. It demonstrates training; "
+        "The data is generated from a known linear rule with added noise. "
+        "It demonstrates training; "
         "it is not a trained traffic predictor."
     )
     seed = st.number_input("Training seed", min_value=0, max_value=100_000, value=7, step=1)

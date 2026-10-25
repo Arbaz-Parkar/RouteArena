@@ -101,15 +101,21 @@ def secant_minimize(
         np.isfinite(v)
         for v in (first_value, second_value, first_derivative, second_derivative)
     ):
-        return make_result(path[-1], second_value, path, nfev, njev, False, "non-finite initial value")
+        return make_result(
+            path[-1], second_value, path, nfev, njev, False, "non-finite initial value"
+        )
 
     if abs(first_derivative) <= grad_tol:
-        return make_result(path[0], first_value, [path[0]], nfev, njev, True, "gradient tolerance reached")
+        return make_result(
+            path[0], first_value, [path[0]], nfev, njev, True, "gradient tolerance reached"
+        )
 
     for _ in range(max_iter):
         denominator = second_derivative - first_derivative
         if abs(denominator) <= np.finfo(float).eps:
-            return make_result(path[-1], second_value, path, nfev, njev, False, "secant slope is zero")
+            return make_result(
+                path[-1], second_value, path, nfev, njev, False, "secant slope is zero"
+            )
         candidate_value = second - second_derivative * (second - first) / denominator
         candidate = np.array([candidate_value])
         value = objective_value(fun, candidate)
@@ -117,14 +123,20 @@ def secant_minimize(
         nfev += 1
         njev += 1
         if not np.isfinite(value) or not np.isfinite(derivative):
-            return make_result(path[-1], second_value, path, nfev, njev, False, "iteration diverged")
+            return make_result(
+                path[-1], second_value, path, nfev, njev, False, "iteration diverged"
+            )
         path.append(candidate)
         first, second = second, candidate_value
         first_derivative, second_derivative = second_derivative, derivative
         first_value, second_value = second_value, value
         if abs(derivative) <= grad_tol:
-            return make_result(candidate, value, path, nfev, njev, True, "gradient tolerance reached")
-    return make_result(path[-1], second_value, path, nfev, njev, False, "maximum iterations reached")
+            return make_result(
+                candidate, value, path, nfev, njev, True, "gradient tolerance reached"
+            )
+    return make_result(
+        path[-1], second_value, path, nfev, njev, False, "maximum iterations reached"
+    )
 
 
 def bfgs(

@@ -78,7 +78,10 @@ def run(quick: bool, output_dir: Path) -> dict:
         "objective": "Mean ACO travel time across three fixed seeds",
         "summary": summary,
         "versions_and_machine": _versions(),
-        "note": "A lower objective is better; report the observed values even if random search wins.",
+        "note": (
+            "A lower objective is better; report the observed values even if random "
+            "search wins."
+        ),
     }
     record = write_run_record(
         "tuning-comparison",
@@ -105,7 +108,10 @@ def run(quick: bool, output_dir: Path) -> dict:
                 }
             )
     with (output_dir / "tuning_summary.csv").open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["method", "mean_minutes", "std_minutes", "runs"])
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=["method", "mean_minutes", "std_minutes", "runs"],
+        )
         writer.writeheader()
         writer.writerows(
             [

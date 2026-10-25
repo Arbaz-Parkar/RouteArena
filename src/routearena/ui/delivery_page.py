@@ -242,10 +242,16 @@ def render_delivery_page() -> None:
         "Algorithms to compare",
         _METHODS,
         default=default_methods,
-        help="Held-Karp proves the best tour for up to 12 customers and is hidden above that limit.",
+        help=(
+            "Held-Karp proves the best tour for up to 12 customers and is hidden "
+            "above that limit."
+        ),
     )
     if customer_count > _EXACT_CUSTOMERS:
-        st.caption("Held-Karp is limited to 12 customer stops because its exact search grows exponentially.")
+        st.caption(
+            "Held-Karp is limited to 12 customer stops because its exact search "
+            "grows exponentially."
+        )
 
     st.caption(
         f"Travel-time assumption: straight-line Haversine distance × 1.25 detour factor ÷ "

@@ -35,7 +35,9 @@ def golden_section_search(
     f_left = float(fun(left))
     f_right = float(fun(right))
     nfev = 2
-    for iteration in range(max_iter):
+    iterations = 0
+    for _ in range(max_iter):
+        iterations += 1
         if upper - lower <= tol:
             break
         if f_left <= f_right:
@@ -48,7 +50,7 @@ def golden_section_search(
             f_right = float(fun(right))
         nfev += 1
     x = (lower + upper) / 2.0
-    return ScalarSearchResult(x, float(fun(x)), nfev + 1, iteration + 1, upper - lower <= tol)
+    return ScalarSearchResult(x, float(fun(x)), nfev + 1, iterations, upper - lower <= tol)
 
 
 def fibonacci_search(
@@ -120,7 +122,9 @@ def quadratic_fit_search(
         raise ValueError("x_middle must have an objective value no greater than either endpoint")
 
     success = False
-    for iteration in range(max_iter):
+    iterations = 0
+    for _ in range(max_iter):
+        iterations += 1
         if x_right - x_left <= tol:
             success = True
             break
@@ -161,7 +165,7 @@ def quadratic_fit_search(
         x,
         f_middle,
         nfev,
-        iteration + 1,
+        iterations,
         success or x_right - x_left <= tol,
     )
 

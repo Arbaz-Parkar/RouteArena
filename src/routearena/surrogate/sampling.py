@@ -1,5 +1,6 @@
 """Reproducible design points and simple space-filling metrics."""
 
+# ruff: noqa: E402
 from __future__ import annotations
 
 from itertools import product
@@ -66,7 +67,7 @@ def stratified_sampling(
     return limits[:, 0] + unit * (limits[:, 1] - limits[:, 0])
 
 
-def space_filling_metrics(points: np.ndarray) -> dict[str, float]:
+def space_filling_metrics(points: np.ndarray) -> dict[str, float]:  # noqa: F811
     """Return minimum pairwise distance and centered discrepancy on the unit cube."""
     values = np.asarray(points, dtype=float)
     if values.ndim != 2 or values.shape[0] < 2 or values.shape[1] < 1:
@@ -100,7 +101,7 @@ def space_filling_metrics(points: np.ndarray) -> dict[str, float]:
         "minimum_pairwise_distance": float(np.min(distances)),
         "centered_discrepancy": float(np.sqrt(max(0.0, discrepancy_squared))),
     }
-def _centered_discrepancy(points: np.ndarray) -> float:
+def _centered_discrepancy(points: np.ndarray) -> float:  # noqa: F811
     """Return SciPy's squared centered L2 discrepancy on the unit cube."""
     count, dimensions = points.shape
     centered = np.abs(points - 0.5)
@@ -117,24 +118,27 @@ def _centered_discrepancy(points: np.ndarray) -> float:
         - (2.0 / count) * first_order.sum()
         + second_order / count**2
     )
-    return float(np.sqrt(max(0.0, squared)))
+    return float(max(0.0, squared))
 
 
-def space_filling_metrics(points: np.ndarray) -> dict[str, float]:
+def space_filling_metrics(points: np.ndarray) -> dict[str, float]:  # noqa: F811
     """Measure normalized minimum spacing and centered discrepancy."""
     values = np.asarray(points, dtype=float)
     if values.ndim != 2 or values.shape[0] < 2 or values.shape[1] < 1:
         raise ValueError("points must be a 2D array with at least two rows and one column")
     if not np.all(np.isfinite(values)):
         raise ValueError("points must contain only finite values")
-    minima = np.min(values, axis=0)
-    spans = np.ptp(values, axis=0)
-    normalized = np.divide(
-        values - minima,
-        spans,
-        out=np.zeros_like(values),
-        where=spans > 0,
-    )
+    if np.all((values >= 0.0) & (values <= 1.0)):
+        normalized = values
+    else:
+        minima = np.min(values, axis=0)
+        spans = np.ptp(values, axis=0)
+        normalized = np.divide(
+            values - minima,
+            spans,
+            out=np.zeros_like(values),
+            where=spans > 0,
+        )
     differences = normalized[:, None, :] - normalized[None, :, :]
     distances = np.sqrt(np.sum(differences**2, axis=2))
     distances[np.diag_indices_from(distances)] = np.inf

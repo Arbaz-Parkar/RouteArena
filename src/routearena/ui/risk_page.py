@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
@@ -31,7 +30,10 @@ def render_risk_page() -> None:
         st.info("Run at least one route on the Delivery Planner page before analyzing risk.")
         return
     if current_key != delivery_key:
-        st.info("The planner inputs have changed. Return to Delivery Planner and run the updated plan.")
+        st.info(
+            "The planner inputs have changed. Return to Delivery Planner "
+            "and run the updated plan."
+        )
         return
 
     method_names = list(results)

@@ -225,7 +225,9 @@ def _render_optimizer_arena() -> None:
             )
             st.session_state["arena_record_name"] = record_path.name
         except OSError as exc:
-            st.warning(f"Optimizer race finished, but its local run record could not be saved: {exc}")
+            st.warning(
+                f"Optimizer race finished, but its local run record could not be saved: {exc}"
+            )
         st.session_state["arena_results"] = results
         st.session_state["arena_function"] = function_name
         st.session_state["arena_config"] = (tuple(algorithms), float(start_x), float(start_y))

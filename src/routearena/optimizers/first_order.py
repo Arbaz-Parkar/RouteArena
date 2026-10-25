@@ -45,18 +45,32 @@ def gradient_descent(
         if np.linalg.norm(gradient) <= grad_tol:
             return make_result(x, value, path, nfev, njev, True, "gradient tolerance reached")
         direction = -gradient
-        search = bracketed_line_search(
-            lambda alpha: objective_value(fun, x + alpha * direction),
-            tol=line_search_tol,
-        )
+        def line_objective(
+            alpha: float,
+            base: np.ndarray = x,
+            step: np.ndarray = direction,
+        ) -> float:
+            return objective_value(fun, base + alpha * step)
+
+        search = bracketed_line_search(line_objective, tol=line_search_tol)
         nfev += search.nfev
         candidate = x + search.x * direction
         candidate_value = objective_value(fun, candidate)
         nfev += 1
         if not np.isfinite(candidate_value):
-            return make_result(x, value, path, nfev, njev, False, "line search produced a non-finite value")
+            return make_result(
+                x,
+                value,
+                path,
+                nfev,
+                njev,
+                False,
+                "line search produced a non-finite value",
+            )
         if candidate_value >= value and np.linalg.norm(candidate - x) <= line_search_tol:
-            return make_result(x, value, path, nfev, njev, False, "line search could not make progress")
+            return make_result(
+                x, value, path, nfev, njev, False, "line search could not make progress"
+            )
         x, value = candidate, candidate_value
         path.append(x.copy())
 
@@ -93,7 +107,9 @@ def _fixed_step_method(
             return make_result(x, value, path, nfev, njev, True, "gradient tolerance reached")
         candidate = x + update(gradient, iteration)
         if not np.all(np.isfinite(candidate)):
-            return make_result(x, value, path, nfev, njev, False, "update produced a non-finite point")
+            return make_result(
+                x, value, path, nfev, njev, False, "update produced a non-finite point"
+            )
         candidate_value = objective_value(fun, candidate)
         nfev += 1
         if not np.isfinite(candidate_value):

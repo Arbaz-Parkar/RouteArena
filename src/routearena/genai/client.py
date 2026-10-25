@@ -31,7 +31,9 @@ class LLMClient:
         try:
             from openai import OpenAI
         except ImportError as exc:
-            raise LLMError("Install the project dependencies to add the optional OpenAI SDK.") from exc
+            raise LLMError(
+                "Install the project dependencies to add the optional OpenAI SDK."
+            ) from exc
 
         options: dict[str, Any] = {
             "api_key": config.llm_api_key,
