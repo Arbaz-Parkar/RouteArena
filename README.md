@@ -78,3 +78,47 @@ The Optimizer Arena also contains a **How AI Learns** section. It trains a small
 
 In the Assistant, an opted-in model can turn a sentence into a strict Pydantic scenario object. Required fields and allowed ranges are validated before display; parsing does not automatically run a solver. Scenario parsing requires a configured model, while RAG and template explanations remain available offline.
 
+## Optional reference tools and deployment
+
+The P2 references are optional and do not replace RouteArena's from-scratch solvers.
+Install the OR-Tools reference and run the 14-city TSPLIB `burma14` benchmark with:
+
+```powershell
+python -m pip install -e ".[benchmarks]"
+python scripts/run_tsplib_benchmark.py
+```
+
+The benchmark checks Held-Karp against the published optimum of 3,323 km, then reports
+seeded genetic and ant-colony results and an OR-Tools heuristic reference when installed.
+OR-Tools does not guarantee an optimal route. The coordinates come from the
+[TSPLIB burma14 instance](https://raw.githubusercontent.com/mastqe/tsplib/master/burma14.tsp);
+the known optimum is listed by [TSPLIB's symmetric-instance reference](https://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/tsp/TSP-BEST.html).
+
+For an optional OpenStreetMap road-distance matrix, install OSMnx and NetworkX:
+
+```powershell
+python -m pip install -e ".[maps]"
+```
+
+Call `routearena.logistics.road_reference.osmnx_road_distance_matrix` with an array of
+`(latitude, longitude)` points. If no graph is passed, it downloads the drivable graph
+around Nerul; this needs an internet connection. The function returns directed road
+distances in metres. It does not estimate traffic or travel time, and the current
+from-scratch solvers require symmetric matrices, so this is a separate reference.
+OSMnx speed and routing behavior is described in its
+[installation guide](https://osmnx.readthedocs.io/en/stable/installation.html) and
+[routing reference](https://osmnx.readthedocs.io/en/stable/user-reference.html).
+
+Build and run the local web app in Docker Desktop with:
+
+```powershell
+docker build -t routearena .
+docker run --rm -p 8501:8501 routearena
+```
+
+Then open `http://localhost:8501`. The image runs as a non-root user and starts in
+offline mode. Optional LLM settings can be supplied through Docker environment variables;
+do not bake `.env` or API keys into the image.
+
+GitHub Actions runs the test suite with coverage, Ruff lint, and Ruff formatting checks
+on Python 3.11 and 3.12 for pushes to `main`, pull requests, and manual runs.
