@@ -72,9 +72,9 @@ def test_hub_gradient_matches_central_differences():
     for index in range(2):
         offset = np.zeros(2)
         offset[index] = step
-        numerical[index] = (
-            model.objective(point + offset) - model.objective(point - offset)
-        ) / (2 * step)
+        numerical[index] = (model.objective(point + offset) - model.objective(point - offset)) / (
+            2 * step
+        )
 
     np.testing.assert_allclose(model.gradient(point), numerical, rtol=2e-5, atol=2e-5)
 
@@ -95,4 +95,3 @@ def test_hub_hessian_matches_gradient_differences():
     )
 
     np.testing.assert_allclose(model.hessian(point), numerical, rtol=2e-5, atol=2e-5)
-

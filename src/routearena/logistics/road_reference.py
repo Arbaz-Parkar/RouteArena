@@ -58,6 +58,7 @@ def osmnx_road_distance_matrix(
                 distances[row, column] = float(lengths[int(target)])
     if not np.all(np.isfinite(distances)):
         raise ValueError(
-            "the downloaded road graph does not connect every snapped stop in the requested direction"
+            "the downloaded road graph does not connect every snapped stop "
+            "in the requested direction"
         )
     return distances

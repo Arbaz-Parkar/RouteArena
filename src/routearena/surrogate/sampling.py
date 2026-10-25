@@ -28,9 +28,7 @@ def random_sampling(
     return limits[:, 0] + unit * (limits[:, 1] - limits[:, 0])
 
 
-def full_factorial(
-    bounds: np.ndarray | list[tuple[float, float]], levels: int
-) -> np.ndarray:
+def full_factorial(bounds: np.ndarray | list[tuple[float, float]], levels: int) -> np.ndarray:
     """Return every combination of evenly spaced values on each axis."""
     limits = _validated_bounds(bounds)
     if levels < 2:
@@ -101,6 +99,8 @@ def space_filling_metrics(points: np.ndarray) -> dict[str, float]:  # noqa: F811
         "minimum_pairwise_distance": float(np.min(distances)),
         "centered_discrepancy": float(np.sqrt(max(0.0, discrepancy_squared))),
     }
+
+
 def _centered_discrepancy(points: np.ndarray) -> float:  # noqa: F811
     """Return SciPy's squared centered L2 discrepancy on the unit cube."""
     count, dimensions = points.shape
@@ -114,9 +114,7 @@ def _centered_discrepancy(points: np.ndarray) -> float:  # noqa: F811
     )
     second_order = np.prod(pairwise, axis=2).sum()
     squared = (
-        (13.0 / 12.0) ** dimensions
-        - (2.0 / count) * first_order.sum()
-        + second_order / count**2
+        (13.0 / 12.0) ** dimensions - (2.0 / count) * first_order.sum() + second_order / count**2
     )
     return float(max(0.0, squared))
 

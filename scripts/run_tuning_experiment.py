@@ -79,8 +79,7 @@ def run(quick: bool, output_dir: Path) -> dict:
         "summary": summary,
         "versions_and_machine": _versions(),
         "note": (
-            "A lower objective is better; report the observed values even if random "
-            "search wins."
+            "A lower objective is better; report the observed values even if random search wins."
         ),
     }
     record = write_run_record(

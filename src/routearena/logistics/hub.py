@@ -85,4 +85,3 @@ def _validate_hub(hub_xy: np.ndarray) -> np.ndarray:
     if point.shape != (2,) or not np.all(np.isfinite(point)):
         raise ValueError("hub position must be a finite (x, y) pair")
     return point
-

@@ -3,7 +3,6 @@
 import streamlit as st  # noqa: I001
 
 
-
 _COVERAGE = [
     {
         "Unit": "Unit 1 · Optimization process",
@@ -28,12 +27,10 @@ _COVERAGE = [
             "metrics; polynomial and RBF GP surrogates; expected-improvement tuning"
         ),
         "Status": (
-            "Implemented in Smart Tuning; experiment reports compare Bayesian "
-            "and random search"
+            "Implemented in Smart Tuning; experiment reports compare Bayesian and random search"
         ),
         "Where to look": (
-            "Smart Tuning · surrogate/sampling.py · surrogate/models.py · "
-            "surrogate/bayes.py"
+            "Smart Tuning · surrogate/sampling.py · surrogate/models.py · surrogate/bayes.py"
         ),
     },
     {
@@ -56,8 +53,7 @@ _COVERAGE = [
         ),
         "Status": "Implemented when a model is configured; all answers still work offline",
         "Where to look": (
-            "Assistant · genai/client.py · genai/grounding.py · "
-            "genai/scenario.py · genai/rag/"
+            "Assistant · genai/client.py · genai/grounding.py · genai/scenario.py · genai/rag/"
         ),
     },
     {

@@ -23,4 +23,3 @@ def test_quadratic_fit_search_refines_a_bracket():
 
     assert result.success
     assert result.x == pytest.approx(1.25, abs=1e-6)
-

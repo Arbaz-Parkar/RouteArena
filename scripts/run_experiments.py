@@ -58,16 +58,10 @@ def _optimizer_experiments(quick: bool) -> tuple[list[dict[str, Any]], list[dict
         "Rosenbrock": (rosenbrock, rosenbrock_grad, rosenbrock_hess),
     }
     optimizers = {
-        "Gradient descent": lambda fun, grad, hess, x: gradient_descent(
-            fun, grad, x, max_iter=500
-        ),
-        "Adam": lambda fun, grad, hess, x: adam(
-            fun, grad, x, learning_rate=0.03, max_iter=1200
-        ),
+        "Gradient descent": lambda fun, grad, hess, x: gradient_descent(fun, grad, x, max_iter=500),
+        "Adam": lambda fun, grad, hess, x: adam(fun, grad, x, learning_rate=0.03, max_iter=1200),
         "BFGS": lambda fun, grad, hess, x: bfgs(fun, grad, x, max_iter=500),
-        "Newton": lambda fun, grad, hess, x: newton(
-            fun, grad, x, hess=hess, max_iter=300
-        ),
+        "Newton": lambda fun, grad, hess, x: newton(fun, grad, x, hess=hess, max_iter=300),
     }
     optimizer_rows: list[dict[str, Any]] = []
     for function_name, (fun, grad, hess) in functions.items():

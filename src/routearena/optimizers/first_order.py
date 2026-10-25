@@ -45,6 +45,7 @@ def gradient_descent(
         if np.linalg.norm(gradient) <= grad_tol:
             return make_result(x, value, path, nfev, njev, True, "gradient tolerance reached")
         direction = -gradient
+
         def line_objective(
             alpha: float,
             base: np.ndarray = x,
@@ -266,4 +267,3 @@ def _validate_options(grad_tol: float, max_iter: int) -> None:
         raise ValueError("grad_tol must be positive and finite")
     if max_iter < 1:
         raise ValueError("max_iter must be at least 1")
-

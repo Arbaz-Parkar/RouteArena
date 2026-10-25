@@ -58,9 +58,7 @@ def render_ml_demo() -> None:
 
     figure = go.Figure()
     for name, values in result["loss_history"].items():
-        figure.add_trace(
-            go.Scatter(x=list(range(len(values))), y=values, mode="lines", name=name)
-        )
+        figure.add_trace(go.Scatter(x=list(range(len(values))), y=values, mode="lines", name=name))
     figure.update_layout(
         xaxis_title="Weight update",
         yaxis_title="Training mean squared error / 2",
@@ -69,10 +67,7 @@ def render_ml_demo() -> None:
     )
     st.plotly_chart(figure, use_container_width=True)
     st.dataframe(
-        [
-            {"Method": name, "Held-out MSE": value}
-            for name, value in result["test_mse"].items()
-        ],
+        [{"Method": name, "Held-out MSE": value} for name, value in result["test_mse"].items()],
         hide_index=True,
         use_container_width=True,
     )

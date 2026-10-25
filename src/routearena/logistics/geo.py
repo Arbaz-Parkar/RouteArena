@@ -39,8 +39,7 @@ def haversine_distance(point_a: tuple[float, float], point_b: tuple[float, float
     delta_lat = lat_b - lat_a
     delta_lon = lon_b - lon_a
     haversine = (
-        np.sin(delta_lat / 2.0) ** 2
-        + np.cos(lat_a) * np.cos(lat_b) * np.sin(delta_lon / 2.0) ** 2
+        np.sin(delta_lat / 2.0) ** 2 + np.cos(lat_a) * np.cos(lat_b) * np.sin(delta_lon / 2.0) ** 2
     )
     haversine = np.clip(haversine, 0.0, 1.0)
     central_angle = 2.0 * np.arctan2(np.sqrt(haversine), np.sqrt(max(0.0, 1.0 - haversine)))
@@ -57,9 +56,7 @@ def distance_matrix(points: np.ndarray) -> np.ndarray:
     delta_lon = longitudes[:, None] - longitudes[None, :]
     haversine = (
         np.sin(delta_lat / 2.0) ** 2
-        + np.cos(latitudes[:, None])
-        * np.cos(latitudes[None, :])
-        * np.sin(delta_lon / 2.0) ** 2
+        + np.cos(latitudes[:, None]) * np.cos(latitudes[None, :]) * np.sin(delta_lon / 2.0) ** 2
     )
     haversine = np.clip(haversine, 0.0, 1.0)
     angles = 2.0 * np.arctan2(np.sqrt(haversine), np.sqrt(1.0 - haversine))
@@ -141,4 +138,3 @@ def _validate_coordinate(point: tuple[float, float] | np.ndarray) -> np.ndarray:
     if not -180.0 <= longitude <= 180.0:
         raise ValueError("longitude must be between -180 and 180 degrees")
     return value
-

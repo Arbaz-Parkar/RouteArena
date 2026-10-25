@@ -48,8 +48,7 @@ def check_numeric_grounding(answer: str, context: str) -> GroundingResult:
     unsupported: list[str] = []
     for token, number, decimals in _numbers(answer):
         if not any(
-            round(candidate, decimals) == round(number, decimals)
-            for candidate in context_numbers
+            round(candidate, decimals) == round(number, decimals) for candidate in context_numbers
         ):
             unsupported.append(token)
     return GroundingResult(not unsupported, tuple(unsupported))

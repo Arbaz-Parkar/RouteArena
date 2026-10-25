@@ -98,8 +98,7 @@ def secant_minimize(
     second_derivative = float(gradient_value(grad, path[1])[0])
     njev += 2
     if not all(
-        np.isfinite(v)
-        for v in (first_value, second_value, first_derivative, second_derivative)
+        np.isfinite(v) for v in (first_value, second_value, first_derivative, second_derivative)
     ):
         return make_result(
             path[-1], second_value, path, nfev, njev, False, "non-finite initial value"
@@ -187,8 +186,8 @@ def bfgs(
             rho = 1.0 / curvature
             identity = np.eye(x.size)
             left = identity - rho * np.outer(displacement, gradient_change)
-            inverse_hessian = (
-                left @ inverse_hessian @ left.T + rho * np.outer(displacement, displacement)
+            inverse_hessian = left @ inverse_hessian @ left.T + rho * np.outer(
+                displacement, displacement
             )
         else:
             inverse_hessian = np.eye(x.size)
@@ -218,4 +217,3 @@ def _validate_options(grad_tol: float, max_iter: int) -> None:
         raise ValueError("grad_tol must be positive and finite")
     if max_iter < 1:
         raise ValueError("max_iter must be at least 1")
-

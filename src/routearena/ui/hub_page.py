@@ -151,4 +151,3 @@ def render_hub_page() -> None:
                 f"Hub: ({result.x[0] / 1000:.2f}, {result.x[1] / 1000:.2f}) km · "
                 f"{result.nit} steps · {'converged' if result.success else result.message}"
             )
-

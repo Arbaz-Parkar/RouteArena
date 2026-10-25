@@ -166,7 +166,5 @@ def convergence_curve(
         if counts.size == 0 or np.any(counts < 1) or np.any(counts > values.size):
             raise ValueError("checkpoints must be non-empty sample counts within the data")
     means = np.asarray([np.mean(values[:count]) for count in counts], dtype=float)
-    percentile_90 = np.asarray(
-        [np.percentile(values[:count], 90) for count in counts], dtype=float
-    )
+    percentile_90 = np.asarray([np.percentile(values[:count], 90) for count in counts], dtype=float)
     return counts, means, percentile_90

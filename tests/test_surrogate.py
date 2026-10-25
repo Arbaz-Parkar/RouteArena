@@ -74,6 +74,7 @@ def test_gaussian_process_matches_sklearn_reference() -> None:
 
 def test_expected_improvement_and_bayesian_budget() -> None:
     assert np.allclose(expected_improvement(np.array([0.0]), np.array([0.0]), 1.0), [0.99])
+
     def objective(point: np.ndarray) -> float:
         return float(np.sum((point - np.array([0.25, 1.5])) ** 2))
 

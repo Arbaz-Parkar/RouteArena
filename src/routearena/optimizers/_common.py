@@ -84,4 +84,3 @@ def backtracking_step(
             return candidate, candidate_value, evaluations, True
         alpha *= shrink
     return x, value, evaluations, False
-

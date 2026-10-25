@@ -128,13 +128,11 @@ def quadratic_fit_search(
         if x_right - x_left <= tol:
             success = True
             break
-        numerator = (
-            (x_middle - x_left) ** 2 * (f_middle - f_right)
-            - (x_middle - x_right) ** 2 * (f_middle - f_left)
+        numerator = (x_middle - x_left) ** 2 * (f_middle - f_right) - (x_middle - x_right) ** 2 * (
+            f_middle - f_left
         )
         denominator = 2.0 * (
-            (x_middle - x_left) * (f_middle - f_right)
-            - (x_middle - x_right) * (f_middle - f_left)
+            (x_middle - x_left) * (f_middle - f_right) - (x_middle - x_right) * (f_middle - f_left)
         )
         if abs(denominator) <= np.finfo(float).eps:
             candidate = (x_left + x_right) / 2.0
@@ -217,4 +215,3 @@ def _validate_interval(lower: float, upper: float, tol: float, max_iter: int) ->
         raise ValueError("lower and upper must be finite with lower < upper")
     if tol <= 0 or max_iter < 1:
         raise ValueError("tol and max_iter must be positive")
-

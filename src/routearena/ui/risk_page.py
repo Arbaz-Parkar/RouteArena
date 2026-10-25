@@ -31,8 +31,7 @@ def render_risk_page() -> None:
         return
     if current_key != delivery_key:
         st.info(
-            "The planner inputs have changed. Return to Delivery Planner "
-            "and run the updated plan."
+            "The planner inputs have changed. Return to Delivery Planner and run the updated plan."
         )
         return
 
@@ -190,9 +189,7 @@ def render_risk_page() -> None:
 
     counts, means, percentiles_90 = convergence_curve(selected.samples)
     convergence = go.Figure()
-    convergence.add_trace(
-        go.Scatter(x=counts, y=means, mode="lines+markers", name="Running mean")
-    )
+    convergence.add_trace(go.Scatter(x=counts, y=means, mode="lines+markers", name="Running mean"))
     convergence.add_trace(
         go.Scatter(
             x=counts,

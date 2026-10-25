@@ -186,16 +186,14 @@ def render_assistant_page() -> None:
         st.caption("Enable model answers above to use scenario parsing.")
     elif not configured:
         st.caption(
-            "Scenario parsing needs a configured model; "
-            "the rest of the assistant works offline."
+            "Scenario parsing needs a configured model; the rest of the assistant works offline."
         )
 
     explain = st.button(
         "Explain the latest route and risk results",
         disabled=(
             not st.session_state.get("delivery_results")
-            or st.session_state.get("delivery_key")
-            != st.session_state.get("delivery_current_key")
+            or st.session_state.get("delivery_key") != st.session_state.get("delivery_current_key")
         ),
     )
     if explain:

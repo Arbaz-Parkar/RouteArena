@@ -45,9 +45,7 @@ def ortools_reference(
     callback_index = routing.RegisterTransitCallback(transit_cost)
     routing.SetArcCostEvaluatorOfAllVehicles(callback_index)
     parameters = pywrapcp.DefaultRoutingSearchParameters()
-    parameters.first_solution_strategy = (
-        routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
-    )
+    parameters.first_solution_strategy = routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
     parameters.local_search_metaheuristic = (
         routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH
     )

@@ -125,4 +125,3 @@ def test_analytic_gradients_match_central_differences(function, gradient, point)
         numerical[index] = (function(point + offset) - function(point - offset)) / (2.0 * step)
 
     np.testing.assert_allclose(gradient(point), numerical, rtol=1e-6, atol=1e-6)
-

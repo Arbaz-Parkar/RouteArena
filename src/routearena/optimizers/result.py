@@ -17,4 +17,3 @@ class OptimizeResult:
     njev: int
     success: bool
     message: str
-

@@ -36,8 +36,7 @@ def run_benchmark() -> dict[str, Any]:
     exact = held_karp(matrix, max_customers=13)
     if exact.cost != BURMA14_OPTIMAL_COST:
         raise RuntimeError(
-            f"TSPLIB reference check failed: expected {BURMA14_OPTIMAL_COST}, "
-            f"got {exact.cost:g}"
+            f"TSPLIB reference check failed: expected {BURMA14_OPTIMAL_COST}, got {exact.cost:g}"
         )
 
     summaries = {

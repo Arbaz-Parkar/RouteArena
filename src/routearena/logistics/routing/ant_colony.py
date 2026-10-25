@@ -62,10 +62,9 @@ def ant_colony(
             while unvisited:
                 current = route[-1]
                 candidates = np.asarray(sorted(unvisited), dtype=int)
-                log_weight = (
-                    alpha * np.log(np.maximum(pheromone[current, candidates], 1e-300))
-                    + beta * np.log(np.maximum(heuristic[current, candidates], 1e-300))
-                )
+                log_weight = alpha * np.log(
+                    np.maximum(pheromone[current, candidates], 1e-300)
+                ) + beta * np.log(np.maximum(heuristic[current, candidates], 1e-300))
                 probabilities = np.exp(log_weight - np.max(log_weight))
                 probabilities /= probabilities.sum()
                 following = int(rng.choice(candidates, p=probabilities))

@@ -47,9 +47,7 @@ def run_regression_demo(seed: int = 0) -> dict[str, Any]:
 
     initial = np.zeros(train_design.shape[1], dtype=float)
     descent = gradient_descent(objective, gradient, initial, grad_tol=1e-7, max_iter=400)
-    adaptive = adam(
-        objective, gradient, initial, learning_rate=0.05, grad_tol=1e-7, max_iter=2500
-    )
+    adaptive = adam(objective, gradient, initial, learning_rate=0.05, grad_tol=1e-7, max_iter=2500)
     closed_form, *_ = np.linalg.lstsq(train_design, train_y, rcond=None)
 
     models: dict[str, np.ndarray] = {
@@ -88,7 +86,6 @@ def run_regression_demo(seed: int = 0) -> dict[str, Any]:
         "converged": {"Gradient descent": descent.success, "Adam": adaptive.success},
         "sklearn_available": sklearn_error is not None,
         "note": (
-            "Synthetic teaching data generated from a known linear delivery-time "
-            "rule plus noise."
+            "Synthetic teaching data generated from a known linear delivery-time rule plus noise."
         ),
     }

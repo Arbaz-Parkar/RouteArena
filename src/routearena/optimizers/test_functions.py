@@ -60,4 +60,3 @@ def parabola_grad(x: np.ndarray | float) -> np.ndarray:
     """Analytic one-dimensional derivative of :func:`parabola`."""
     value = float(np.asarray(x, dtype=float).reshape(-1)[0])
     return np.array([2.0 * (value - 3.0)])
-
