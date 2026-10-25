@@ -143,7 +143,7 @@ def _route_map(
     for index, (name, result) in enumerate(results.items()):
         ordered = coordinates[list(result.route)]
         figure.add_trace(
-            go.Scattermapbox(
+            go.Scattermap(
                 lat=ordered[:, 0],
                 lon=ordered[:, 1],
                 mode="lines",
@@ -154,7 +154,7 @@ def _route_map(
         )
     point_names = ["Hub", *names]
     figure.add_trace(
-        go.Scattermapbox(
+        go.Scattermap(
             lat=coordinates[:, 0],
             lon=coordinates[:, 1],
             mode="markers+text",
@@ -167,7 +167,7 @@ def _route_map(
         )
     )
     figure.update_layout(
-        mapbox={
+        map={
             "style": "open-street-map",
             "center": {"lat": hub[0], "lon": hub[1]},
             "zoom": 12,
@@ -243,8 +243,7 @@ def render_delivery_page() -> None:
         _METHODS,
         default=default_methods,
         help=(
-            "Held-Karp proves the best tour for up to 12 customers and is hidden "
-            "above that limit."
+            "Held-Karp proves the best tour for up to 12 customers and is hidden above that limit."
         ),
     )
     if customer_count > _EXACT_CUSTOMERS:
