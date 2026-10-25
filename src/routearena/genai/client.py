@@ -42,18 +42,21 @@ class LLMClient:
             options["base_url"] = config.llm_base_url
         return cls(model=config.llm_model, _client=OpenAI(**options))
 
-    def complete(self, system_prompt: str, user_prompt: str) -> str:
+    def complete(self, system_prompt: str, user_prompt: str, *, json_mode: bool = False) -> str:
         """Return one plain-text completion, converting SDK failures to a safe message."""
         try:
-            response = self._client.chat.completions.create(
-                model=self.model,
-                messages=[
+            request = {
+                "model": self.model,
+                "messages": [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt},
                 ],
-                temperature=0.2,
-                max_tokens=DEFAULT_MAX_TOKENS,
-            )
+                "temperature": 0.2,
+                "max_tokens": DEFAULT_MAX_TOKENS,
+            }
+            if json_mode:
+                request["response_format"] = {"type": "json_object"}
+            response = self._client.chat.completions.create(**request)
         except Exception as exc:  # Provider SDKs expose several transport-specific errors.
             raise LLMError(
                 "The configured model could not answer. Check the provider URL, model name, "

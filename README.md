@@ -62,3 +62,19 @@ python scripts/run_experiments.py
 
 This compares optimizers on test surfaces and hub placement, checks the hub results against SciPy, compares routing heuristics with Held-Karp, examines Monte Carlo convergence and robust candidates, and evaluates local RAG retrieval. It saves raw JSON and CSV rows, mean and standard-deviation aggregates in `experiment_summary.csv`, `experiment_metadata.json` (timestamp, seed, package versions, and machine information), and `summary.png` under the ignored `outputs/` folder. A matching run record is also written under `runs/`. Use `--quick` for smaller real samples. Report the metrics produced by the script; do not substitute unrun or illustrative results.
 
+## Unit 3 and learning demonstrations
+
+The **Smart Tuning** page compares random, Latin-hypercube, stratified-grid, and factorial designs for ACO settings. It fits a polynomial-basis linear model and an RBF Gaussian process, reports held-out error, then compares expected-improvement Bayesian optimization with random search at the same evaluation budget. The objective is the mean route time over fixed ACO seeds on one synthetic instance; the page records the seed and settings.
+
+Run repeated fixed-budget comparisons with:
+
+```powershell
+python scripts/run_tuning_experiment.py
+```
+
+Use `--quick` for two shorter repetitions. The script writes per-run values, a mean/std CSV summary, package and machine metadata, and a convergence PNG under `outputs/tuning/`. Results are empirical; Bayesian optimization may lose to random search on a given run.
+
+The Optimizer Arena also contains a **How AI Learns** section. It trains a small linear delivery-time model on synthetic examples and compares gradient descent and Adam with least squares and scikit-learn. These predictions demonstrate the training process and are not traffic estimates.
+
+In the Assistant, an opted-in model can turn a sentence into a strict Pydantic scenario object. Required fields and allowed ranges are validated before display; parsing does not automatically run a solver. Scenario parsing requires a configured model, while RAG and template explanations remain available offline.
+

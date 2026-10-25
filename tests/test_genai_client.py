@@ -37,6 +37,8 @@ def test_chat_wrapper_uses_low_temperature_and_token_limit() -> None:
     assert completions.request["temperature"] == 0.2
     assert completions.request["max_tokens"] > 0
     assert len(completions.request["messages"]) == 2
+    client.complete("system", "return JSON", json_mode=True)
+    assert completions.request["response_format"] == {"type": "json_object"}
 
 
 def test_chat_wrapper_turns_provider_failure_into_safe_error() -> None:

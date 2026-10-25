@@ -10,6 +10,7 @@ from routearena.config import settings
 from routearena.genai.client import LLMClient, LLMError, model_is_configured
 from routearena.genai.grounding import check_numeric_grounding
 from routearena.genai.rag.retrieval import answer_from_knowledge, retrieve
+from routearena.genai.scenario import ScenarioParseError, parse_scenario
 
 _MAX_MESSAGES = 12
 LOGGER = logging.getLogger(__name__)
@@ -133,8 +134,8 @@ def render_assistant_page() -> None:
     configured = model_is_configured()
     if configured:
         st.info(
-            "When model answers are enabled, your question and retrieved notes—or a compact run "
-            "summary—are sent to the configured provider. Hosted providers receive that text. "
+            "When model answers are enabled, your question and retrieved notes, scenario text, "
+            "or a compact run summary are sent to the configured provider. Hosted providers receive that text. "
             "Do not include customer names, uploaded stop data, or coordinates."
         )
         use_model = st.checkbox("Use the configured language model for answers", value=False)
@@ -151,6 +152,37 @@ def render_assistant_page() -> None:
             client = LLMClient.from_settings()
         except LLMError as exc:
             st.warning(f"Model setup is unavailable. Offline answers remain active. {exc}")
+
+    st.subheader("Parse a delivery scenario")
+    st.write(
+        "Describe the number of stops, region, deadline, and traffic level. "
+        "The model can only return a validated scenario object; it cannot run solvers."
+    )
+    scenario_text = st.text_area(
+        "Scenario description",
+        placeholder="10 deliveries around Nerul, 90 minute deadline, heavy traffic",
+        key="assistant_scenario_text",
+    )
+    parse_button = st.button(
+        "Parse and validate scenario",
+        disabled=(client is None or not scenario_text.strip()),
+    )
+    if parse_button:
+        try:
+            scenario = parse_scenario(scenario_text, client)
+            st.session_state["assistant_parsed_scenario"] = scenario.model_dump()
+            st.session_state["assistant_parsed_scenario_text"] = scenario_text
+        except (LLMError, ScenarioParseError) as exc:
+            st.warning(str(exc))
+    if (
+        st.session_state.get("assistant_parsed_scenario")
+        and st.session_state.get("assistant_parsed_scenario_text") == scenario_text
+    ):
+        st.json(st.session_state["assistant_parsed_scenario"])
+    if configured and client is None:
+        st.caption("Enable model answers above to use scenario parsing.")
+    elif not configured:
+        st.caption("Scenario parsing needs a configured model; the rest of the assistant works offline.")
 
     explain = st.button(
         "Explain the latest route and risk results",

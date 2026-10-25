@@ -18,9 +18,9 @@ _COVERAGE = [
     },
     {
         "Unit": "Unit 3 · Sampling and surrogate models",
-        "RouteArena feature": "Sampling plans, space-filling metrics, surrogates, and Bayesian optimization",
-        "Status": "Not implemented in this P0 build; planned for milestone 7",
-        "Where to look": "See codex.md section 7.6 for the planned scope",
+        "RouteArena feature": "Random, factorial, stratified, and Latin-hypercube designs; discrepancy metrics; polynomial and RBF GP surrogates; expected-improvement tuning",
+        "Status": "Implemented in Smart Tuning; experiment reports compare Bayesian and random search",
+        "Where to look": "Smart Tuning · surrogate/sampling.py · surrogate/models.py · surrogate/bayes.py",
     },
     {
         "Unit": "Unit 4 · Uncertainty and combinatorial optimization",
@@ -30,15 +30,15 @@ _COVERAGE = [
     },
     {
         "Unit": "GenAI demonstration · project extension",
-        "RouteArena feature": "Optional grounded explanations, cited local RAG, and run summaries",
-        "Status": "Implemented; scenario parsing is a planned gap",
-        "Where to look": "Assistant · genai/client.py · genai/grounding.py · genai/rag/",
+        "RouteArena feature": "Optional grounded explanations, cited local RAG, validated scenario parsing, and run summaries",
+        "Status": "Implemented when a model is configured; all answers still work offline",
+        "Where to look": "Assistant · genai/client.py · genai/grounding.py · genai/scenario.py · genai/rag/",
     },
     {
         "Unit": "ML demonstration · project extension",
         "RouteArena feature": "Synthetic delivery-time prediction with gradient descent and Adam",
-        "Status": "Not implemented in this P0 build",
-        "Where to look": "Planned after the P0 milestone",
+        "Status": "Implemented with closed-form and scikit-learn references",
+        "Where to look": "Optimizer Arena · ml/regression_demo.py · ui/ml_demo.py",
     },
 ]
 
@@ -68,7 +68,8 @@ def render_under_hood_page() -> None:
         "python -m pytest --cov=routearena\n"
         "python scripts/build_index.py\n"
         "python scripts/eval_rag.py\n"
-        "python scripts/run_experiments.py",
+        "python scripts/run_experiments.py\n"
+        "python scripts/run_tuning_experiment.py",
         language="powershell",
     )
     st.caption(
