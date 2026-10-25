@@ -25,13 +25,13 @@ from routearena.optimizers.test_functions import (
     parabola,
     parabola_grad,
     quadratic_bowl,
-    quadratic_bowl,
     quadratic_bowl_grad,
     quadratic_bowl_hess,
     rosenbrock,
     rosenbrock_grad,
     rosenbrock_hess,
 )
+from routearena.ui.delivery_page import render_delivery_page
 from routearena.ui.hub_page import render_hub_page
 
 st.set_page_config(page_title="RouteArena | Optimizer Arena", layout="wide")
@@ -187,8 +187,8 @@ def _render_optimizer_arena() -> None:
         start_y = st.number_input("Starting x₂", value=2.0, min_value=-4.0, max_value=4.0)
         run = st.button("Run the race", type="primary", disabled=not algorithms)
         st.caption(
-            "These surfaces are mathematical examples. Delivery locations and route planning "
-            "will be added in later milestones."
+            "These surfaces are mathematical examples. The Delivery Planner page applies "
+            "optimization methods to a synthetic one-rider route."
         )
 
     if run:
@@ -231,9 +231,13 @@ def _render_optimizer_arena() -> None:
 
 def main() -> None:
     """Select and render one of the current RouteArena pages."""
-    page = st.sidebar.radio("Page", ["Optimizer Arena", "Hub Placement"])
+    page = st.sidebar.radio(
+        "Page", ["Optimizer Arena", "Hub Placement", "Delivery Planner"]
+    )
     if page == "Hub Placement":
         render_hub_page()
+    elif page == "Delivery Planner":
+        render_delivery_page()
     else:
         _render_optimizer_arena()
 
