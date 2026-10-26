@@ -32,7 +32,7 @@ _STYLES = """
 
 [data-testid="stMainBlockContainer"] {
     max-width: 1440px;
-    padding-top: 1.3rem;
+    padding-top: 0.8rem;
     padding-bottom: 3rem;
 }
 
@@ -59,6 +59,8 @@ _STYLES = """
 }
 
 [data-testid="stSidebar"] {
+    min-width: 17.5rem;
+    max-width: 17.5rem;
     background: var(--ra-navy);
     border-right: 1px solid #1D3852;
 }
@@ -73,7 +75,12 @@ _STYLES = """
 
 [data-testid="stSidebar"] [data-testid="stRadio"] label {
     border-radius: 0.55rem;
-    padding: 0.28rem 0.4rem;
+    margin-bottom: 0.18rem;
+    padding: 0.4rem 0.45rem;
+}
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label[data-baseweb="radio"] > div:first-child {
+    display: none;
 }
 
 [data-testid="stSidebar"] [data-testid="stRadio"] label p {
@@ -132,21 +139,37 @@ _STYLES = """
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    margin: 0 0 1.7rem;
-    padding: 0.25rem 0 1rem;
-    border-bottom: 1px solid var(--ra-border);
+    margin: 0 0 1.25rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--ra-border);
+    border-radius: 0.9rem;
+    background: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(16, 35, 56, 0.035);
 }
 
 .ra-app-brand {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
+    gap: 0.85rem;
+}
+
+.ra-app-mark {
+    display: grid;
+    width: 2.8rem;
+    height: 2.8rem;
+    place-items: center;
+    border-radius: 0.8rem;
+    background: var(--ra-teal);
+    color: #FFFFFF;
+    font-size: 0.84rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
 }
 
 .ra-app-name {
-    color: var(--ra-navy);
-    font-size: 1rem;
-    font-weight: 750;
+    color: #102338 !important;
+    font-size: 1.32rem;
+    font-weight: 800;
     line-height: 1.2;
 }
 
@@ -238,6 +261,7 @@ _STYLES = """
 
     .ra-app-header {
         margin-bottom: 1.2rem;
+        padding: 0.7rem;
     }
 
     .ra-local-badge {
@@ -272,8 +296,11 @@ def render_app_header() -> None:
         """
         <div class="ra-app-header">
             <div class="ra-app-brand">
+                <div class="ra-app-mark">RA</div>
                 <div>
-                    <div class="ra-app-name">RouteArena</div>
+                    <div class="ra-app-name" style="color:#102338;font-size:1.32rem;font-weight:800;">
+                        RouteArena
+                    </div>
                     <div class="ra-app-context">Operations research · delivery planning</div>
                 </div>
             </div>
