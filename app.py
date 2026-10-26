@@ -40,7 +40,7 @@ from routearena.ui.risk_page import render_risk_page
 from routearena.ui.tuning_page import render_tuning_page
 from routearena.ui.under_hood_page import render_under_hood_page
 
-st.set_page_config(page_title="RouteArena | Optimizer Arena", layout="wide")
+st.set_page_config(page_title="RouteArena | Optimization Studio", layout="wide")
 
 _ALGORITHMS = {
     "Gradient descent": gradient_descent,
@@ -267,8 +267,12 @@ def _render_optimizer_arena() -> None:
 
 def main() -> None:
     """Select and render one of the current RouteArena pages."""
+    from routearena.ui.theme import apply_theme, render_app_footer, render_app_header
+
+    apply_theme()
+    render_app_header()
     page = st.sidebar.radio(
-        "Page",
+        "Navigation",
         [
             "Optimizer Arena",
             "Hub Placement",
@@ -294,6 +298,7 @@ def main() -> None:
     else:
         _render_optimizer_arena()
         render_ml_demo()
+    render_app_footer()
 
 
 if __name__ == "__main__":
