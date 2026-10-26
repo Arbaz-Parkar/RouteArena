@@ -32,8 +32,19 @@ _STYLES = """
 
 [data-testid="stMainBlockContainer"] {
     max-width: 1440px;
-    padding-top: 0.8rem;
+    padding-top: 4rem;
     padding-bottom: 3rem;
+}
+
+[data-testid="stToolbar"],
+[data-testid="stDeployButton"],
+#MainMenu,
+footer {
+    display: none !important;
+}
+
+[data-testid="stDecoration"] {
+    display: none !important;
 }
 
 .stApp h1 {
@@ -54,8 +65,14 @@ _STYLES = """
     font-weight: 600;
 }
 
-.stApp [data-testid="stCaptionContainer"] {
-    color: var(--ra-muted);
+[data-testid="stMain"] [data-testid="stMarkdownContainer"] p,
+[data-testid="stMain"] [data-testid="stMarkdownContainer"] li {
+    color: #243B53 !important;
+}
+
+[data-testid="stMain"] [data-testid="stCaptionContainer"],
+[data-testid="stMain"] [data-testid="stCaptionContainer"] p {
+    color: #5C6F82 !important;
 }
 
 [data-testid="stSidebar"] {
@@ -243,7 +260,20 @@ _STYLES = """
 }
 
 [data-testid="stAlert"] {
+    border: 1px solid #D6E4F0;
     border-radius: 0.7rem;
+    background: #F1F6FB;
+}
+
+[data-testid="stAlert"] [data-testid="stMarkdownContainer"] p {
+    color: #29445F !important;
+}
+
+.stButton > button:disabled {
+    border: 1px solid #D5DEE8;
+    background: #EAF0F5;
+    color: #52677C !important;
+    opacity: 1;
 }
 
 .ra-app-footer {
@@ -256,7 +286,7 @@ _STYLES = """
 
 @media (max-width: 700px) {
     [data-testid="stMainBlockContainer"] {
-        padding: 1rem 1rem 2rem;
+        padding: 4rem 1rem 2rem;
     }
 
     .ra-app-header {
