@@ -93,7 +93,8 @@ def render_under_hood_page() -> None:
         "python scripts/build_index.py\n"
         "python scripts/eval_rag.py\n"
         "python scripts/run_experiments.py\n"
-        "python scripts/run_tuning_experiment.py",
+        "python scripts/run_tuning_experiment.py\n"
+        "python scripts/run_routing_study.py",
         language="powershell",
     )
     st.caption(

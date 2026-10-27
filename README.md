@@ -158,6 +158,27 @@ OR-Tools does not guarantee an optimal route. The coordinates come from the
 [TSPLIB burma14 instance](https://raw.githubusercontent.com/mastqe/tsplib/master/burma14.tsp);
 the known optimum is listed by [TSPLIB's symmetric-instance reference](https://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/tsp/TSP-BEST.html).
 
+### Multi-seed routing study
+
+Open **Routing Study** in the app or run the same reproducible study from PowerShell:
+
+```powershell
+python scripts/run_routing_study.py
+```
+
+The study runs the genetic algorithm and ant colony solver on 30 fixed seeds for
+`burma14`, verifies Held-Karp against the published 3,323 km optimum, and reports
+mean cost, sample standard deviation, optimality gap, runtime, and 95% Student-t
+confidence intervals. Deterministic nearest-neighbor and 2-opt results and an
+optional OR-Tools reference are shown as single-run comparisons without confidence
+intervals. The intervals describe seed-to-seed variation on this benchmark instance;
+they do not establish performance across all routing problems.
+
+The app provides downloads for the summary CSV, trial-level CSV, and full JSON report.
+The command-line run writes the same files under `outputs/routing-study/` and a
+timestamped JSON record under `runs/`. Settings, seeds, package versions, and machine
+details are saved with the results.
+
 ### OpenStreetMap road distances
 
 Install OSMnx and NetworkX to calculate an optional OpenStreetMap road-distance matrix:

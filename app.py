@@ -277,6 +277,7 @@ def main() -> None:
             "Optimizer Arena",
             "Hub Placement",
             "Delivery Planner",
+            "Routing Study",
             "Risk and Uncertainty",
             "Assistant",
             "Smart Tuning",
@@ -287,6 +288,10 @@ def main() -> None:
         render_hub_page()
     elif page == "Delivery Planner":
         render_delivery_page()
+    elif page == "Routing Study":
+        from routearena.ui.routing_study_page import render_routing_study_page
+
+        render_routing_study_page()
     elif page == "Risk and Uncertainty":
         render_risk_page()
     elif page == "Assistant":
